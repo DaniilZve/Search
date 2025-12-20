@@ -6,3 +6,4 @@
 
 vector <Key> ReadFromFtoArr(ifstream& in);
 void PrintRes(pair <vector<int>, int> &ResultIn);
+void WriteFromArrtoF(ofstream& out, vector<Key> ArrKey);

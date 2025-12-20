@@ -30,3 +30,20 @@ void PrintRes(pair <vector<int>, int>& ResultIn)
 		cout << "Ёлементы не найдены";
 	cout << "\n„исло шагов: " << ResultIn.second << endl;
 }
+
+void WriteFromArrtoF(ofstream& out, vector<Key> ArrKey)
+{
+
+	if (out.is_open())
+	{
+		int i = 0;
+		while (i < ArrKey.size())
+		{
+			if (ArrKey[i].date.day < 10)
+				out << '0' << ArrKey[i].date.day << (ArrKey[i].date.month < 10 ? ".0" : ".") << ArrKey[i].date.month << "." << ArrKey[i].date.year << " " << ArrKey[i].fio.f << " " << ArrKey[i].fio.i << " " << ArrKey[i].fio.o << " " << ArrKey[i].Num << "\n";
+			else
+				out << ArrKey[i].date.day << (ArrKey[i].date.month < 10 ? ".0" : ".") << ArrKey[i].date.month << "." << ArrKey[i].date.year << " " << ArrKey[i].fio.f << " " << ArrKey[i].fio.i << " " << ArrKey[i].fio.o << " " << ArrKey[i].Num << "\n";
+			i += 1;
+		}
+	}
+}

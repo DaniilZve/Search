@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\main.cpp" />
+    <ClCompile Include="Src\MergeSort.cpp" />
     <ClCompile Include="Src\Search.cpp" />
     <ClCompile Include="Src\Tests.cpp" />
   </ItemGroup>
@@ -27,9 +28,11 @@
     <Text Include="Static\Input100k.txt" />
     <Text Include="Static\Input10k.txt" />
     <Text Include="Static\Input1k.txt" />
+    <Text Include="Static\SortFileForSearchNum.txt" />
     <Text Include="Static\TestIn.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\MergeSort.h" />
     <ClInclude Include="Src\Search.h" />
     <ClInclude Include="Src\Stract.h" />
     <ClInclude Include="Src\Tests.h" />

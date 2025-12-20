@@ -31,7 +31,7 @@ bool operator == (Key k1, Key k2)
 	else return false;
 }
 
-bool CheckSort(vector<Key>& ArrKey)
+bool CheckSortStract(vector<Key>& ArrKey)
 {
 	bool sort = true;
 	int i = 1;
@@ -68,42 +68,69 @@ bool CheckSort(vector<Key>& ArrKey)
 	return sort;
 }
 
+bool CheckSortNum(vector<Key>& ArrKey)
+{
+	bool sort = true;
+	int i = 1;
+	while (i < ArrKey.size())
+	{
+		if (ArrKey[i - 1].Num <= ArrKey[i].Num)
+			i += 1;
+		else
+		{
+			sort = false;
+			break;
+		}
+	}
+	return sort;
+}
+
+
 pair <vector<int>, int> LinSearch(vector<Key> &ArrKey, int n, Key &Elem)
 {
 	int NumSteps = 0;
 	int left = 0;
 	int right = n - 1;
 	pair <vector<int>, int> EntryNums;
-	if (CheckSort(ArrKey) == true)
+	if ((SumDate(Elem) >= SumDate(ArrKey[right])) && (SumDate(Elem) <= SumDate(ArrKey[left])))
 	{
-		if ((SumDate(Elem) >= SumDate(ArrKey[right])) && (SumDate(Elem) <= SumDate(ArrKey[left])))
+		int i = 1;
+		while (i < n+1)
 		{
-			int i = 1;
-			while (i < n+1)
+			NumSteps += 1;
+			if (ArrKey[i - 1] == Elem)
 			{
-				NumSteps += 1;
-				if (ArrKey[i - 1] == Elem)
-				{
-					EntryNums.first.push_back(i);
-					if (!(ArrKey[i-1] == Elem))
-						break;
-				}
-				i += 1;
+				EntryNums.first.push_back(i);
 			}
+			i += 1;
 		}
-		EntryNums.second = NumSteps;
-		return EntryNums;
 	}
-	else
-	{
-		cout << "Список не отсортирован"<< endl;
-		return EntryNums;
-	}
+	EntryNums.second = NumSteps;
+	return EntryNums;
+	
 }
 
+pair <vector<int>, int> LinSearchNum(vector<Key>& ArrKey, int n, int Num)
+{
+	int NumSteps = 0;
+	int left = 0;
+	int right = n - 1;
+	pair <vector<int>, int> EntryNums;
+	int i = 1;
+	if ((Num >= ArrKey[left].Num) && (Num <= ArrKey[right].Num))
+	{
+		while (i < n + 1)
+		{
+			if (ArrKey[i - 1].Num == Num) EntryNums.first.push_back(i);
+			i += 1;
+			NumSteps += 1;
+		}
+	}
+	EntryNums.second = NumSteps;
+	return EntryNums;
+}
 
-
-int DateFirst(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left,int right )
+int DateFirst(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left,int right ) // Первое вхождение по дате 
 {
 	int mid = 0;
 	int AlKey = SumDate(ArrKey[left]);
@@ -140,44 +167,47 @@ int DateFirst(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left,int right 
 	return -1;	
 }
 
-int DateLast(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)
+int DateLast(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right) // Последнее вхождение по дате 
 {
-	int mid = 0;
-	int AlKey = SumDate(ArrKey[left]);
-	int ArKey = SumDate(ArrKey[right]);
-	int XKey = SumDate(Elem);
-	while ((left <= right) && (XKey >= ArKey) && (XKey <= AlKey))
+	if ((left != -1) && (right != -1))
 	{
-		AlKey = SumDate(ArrKey[left]);
-		ArKey = SumDate(ArrKey[right]);
-		XKey = SumDate(Elem);
-		if ((ArKey != AlKey))
+		int mid = 0;
+		int AlKey = SumDate(ArrKey[left]);
+		int ArKey = SumDate(ArrKey[right]);
+		int XKey = SumDate(Elem);
+		while ((left <= right) && (XKey >= ArKey) && (XKey <= AlKey))
 		{
-			mid = (((long long)(AlKey - XKey) * (right - left)) / (AlKey - ArKey)) + left;
-			NumSteps += 1;
-		}
-		else if (ArKey == XKey)
-			return right;
-		else
-			return -1;
+			AlKey = SumDate(ArrKey[left]);
+			ArKey = SumDate(ArrKey[right]);
+			XKey = SumDate(Elem);
+			if ((ArKey != AlKey))
+			{
+				mid = (((long long)(AlKey - XKey) * (right - left)) / (AlKey - ArKey)) + left;
+				NumSteps += 1;
+			}
+			else if (ArKey == XKey)
+				return right;
+			else
+				return -1;
 
-		int AmKey = SumDate(ArrKey[mid]);
-		if (XKey < AmKey)
-			left = (mid + 1);
-		else if (XKey > AmKey)
-			right = (mid - 1);
-		else
-		{
-			left = (mid + 1);
-			if ((left > ArrKey.size()-1) || (SumDate(ArrKey[left]) != XKey))
-				return mid;
+			int AmKey = SumDate(ArrKey[mid]);
+			if (XKey < AmKey)
+				left = (mid + 1);
+			else if (XKey > AmKey)
+				right = (mid - 1);
+			else
+			{
+				left = (mid + 1);
+				if ((left > ArrKey.size() - 1) || (SumDate(ArrKey[left]) != XKey))
+					return mid;
 
+			}
 		}
 	}
 	return -1;
 }
 
-int FIOFirst(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)
+int FIOFirst(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)// Первое вхождение по дате 
 {
 	if ((left != -1) && (right != -1))
 	{
@@ -216,7 +246,7 @@ int FIOFirst(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)
 	return -1;
 }
 
-int FIOLast(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)
+int FIOLast(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)// Последнее вхождение по ФИО
 {
 	if ((left != -1) && (right != -1))
 	{
@@ -256,19 +286,19 @@ int FIOLast(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)
 	return -1;
 }
 
-int NumFirst(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)
+int NumFirst(vector<Key>& ArrKey, int Elem, int& NumSteps, int left, int right)// Первое вхождение по номеру заявки
 {
 	if ((left != -1) && (right != -1))
 	{
 		int mid = 0;
 		int AlKey = ArrKey[left].Num;
 		int ArKey = ArrKey[right].Num;
-		int XKey = Elem.Num;
+		int XKey = Elem;
 		while ((left <= right) && (XKey >= AlKey) && (XKey <= ArKey))
 		{
 			AlKey = ArrKey[left].Num;
 			ArKey = ArrKey[right].Num;
-			XKey = Elem.Num;
+			XKey = Elem;
 			if ((ArKey != AlKey))
 			{
 				mid = ((XKey - AlKey) * (right - left)) / (ArKey - AlKey) + left;
@@ -295,19 +325,19 @@ int NumFirst(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)
 	return -1;
 }
 
-int NumLast(vector<Key>& ArrKey, Key& Elem, int& NumSteps, int left, int right)
+int NumLast(vector<Key>& ArrKey, int Elem, int& NumSteps, int left, int right)// Последнее вхождение по номеру заявки
 {
 	if ((left != -1) && (right != -1))
 	{
 		int mid = 0;
 		int AlKey = ArrKey[left].Num;
 		int ArKey = ArrKey[right].Num;
-		int XKey = Elem.Num;
+		int XKey = Elem;
 		while ((left <= right) && (XKey >= AlKey) && (XKey <= ArKey))
 		{
 			AlKey = ArrKey[left].Num;
 			ArKey = ArrKey[right].Num;
-			XKey = Elem.Num;
+			XKey = Elem;
 			if ((ArKey != AlKey))
 			{
 				mid = ((XKey - AlKey) * (right - left)) / (ArKey - AlKey) + left;
@@ -345,17 +375,53 @@ pair <vector<int>, int> InterPolSearch(vector<Key>& ArrKey, int n, Key &Elem)
 	if (!ArrKey.empty())
 	{
 		
-		if (CheckSort(ArrKey) == true)
+		if (CheckSortStract(ArrKey) == true)
 		{
 			left = DateFirst(ArrKey, Elem, NumSteps, left, right);
 			right = DateLast(ArrKey, Elem, NumSteps, left, right);
 			left = FIOFirst(ArrKey, Elem, NumSteps, left, right);
 			right = FIOLast(ArrKey, Elem, NumSteps, left, right);
-			left = NumFirst(ArrKey, Elem, NumSteps, left, right);
-			right = NumLast(ArrKey, Elem, NumSteps, left, right);
+			left = NumFirst(ArrKey, Elem.Num, NumSteps, left, right);
+			right = NumLast(ArrKey, Elem.Num, NumSteps, left, right);
 
 			while ((left <= right) && (left != -1) && (right != -1))
 			{
+				NumSteps += 1;
+				EntryNums.first.push_back(left + 1);
+				left += 1;
+			}
+			EntryNums.second = NumSteps;
+		}
+		else
+		{
+			cout << "Список не отсортирован" << endl;
+			return EntryNums;
+		}
+	}
+	else
+		cout << "Список пуст";
+	return EntryNums;
+
+}
+
+pair <vector<int>, int> InterPolSearchNum(vector<Key>& ArrKey, int n, int Elem)
+{
+	bool sort = true;
+	int NumSteps = 0;
+	int left = 0;
+	int right = n - 1;
+	pair <vector<int>, int> EntryNums;
+
+	if (!ArrKey.empty())
+	{
+
+		if (CheckSortNum(ArrKey) == true)
+		{
+			left = NumFirst(ArrKey, Elem, NumSteps, left, right);
+
+			while ((left != -1) && (ArrKey[left].Num == Elem))
+			{
+				NumSteps += 1;
 				EntryNums.first.push_back(left + 1);
 				left += 1;
 			}

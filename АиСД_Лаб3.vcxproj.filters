@@ -4,16 +4,19 @@
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\Tests.cpp" />
     <ClCompile Include="Src\Search.cpp" />
+    <ClCompile Include="Src\MergeSort.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Static\Input1k.txt" />
     <Text Include="Static\Input10k.txt" />
     <Text Include="Static\Input100k.txt" />
     <Text Include="Static\TestIn.txt" />
+    <Text Include="Static\SortFileForSearchNum.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Stract.h" />
     <ClInclude Include="Src\Tests.h" />
     <ClInclude Include="Src\Search.h" />
+    <ClInclude Include="Src\MergeSort.h" />
   </ItemGroup>
 </Project>
